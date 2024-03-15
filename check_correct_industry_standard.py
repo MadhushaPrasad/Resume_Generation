@@ -9,6 +9,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import TfidfVectorizer
+import os
 
 # Download NLTK resources
 nltk.download('punkt')
@@ -54,6 +56,15 @@ trained_model = pipeline.named_steps['clf']
 
 # Serialize the trained model object to a file
 joblib.dump(trained_model, 'industry_model.pkl')
+
+# Initialize and fit the TF-IDF vectorizer
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_vectorizer.fit(X_train)
+
+# Save the TF-IDF vectorizer
+vectorizer_path = os.path.join(os.path.dirname(__file__), 'tfidf_vectorizer.pkl')
+joblib.dump(tfidf_vectorizer, vectorizer_path)
+
 
 # Evaluate the model
 y_pred = pipeline.predict(X_test)
@@ -195,4 +206,4 @@ student_details = {
     ]
 }
 
-getPredicted_industry(student_details)
+getPredicted_industry(student_details) # student_details is the input resume JSON data from another application REST API
