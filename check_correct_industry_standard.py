@@ -1,4 +1,5 @@
 import nltk
+import joblib
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -47,6 +48,12 @@ pipeline = Pipeline([
 ])
 
 pipeline.fit(X_train, y_train)
+
+# Extract the trained model object
+trained_model = pipeline.named_steps['clf']
+
+# Serialize the trained model object to a file
+joblib.dump(trained_model, 'industry_model.pkl')
 
 # Evaluate the model
 y_pred = pipeline.predict(X_test)
